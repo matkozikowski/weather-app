@@ -1,0 +1,35 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    open_weathermap_key: 'b595a444038f55273d814970837a431a'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false
+
+    GuzzleHttp\Client: ~
+    App\Infrastructure\Provider\ServicesProvider: ~
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    App\Symfony\Controller\:
+        resource: '../src/Symfony/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Application\Handler\:
+        resource: '../src/Application/Handler'
+        public: true
+
+    App\Infrastructure\Client\OWClient:
+        arguments:
+            $httpClient: '@GuzzleHttp\Client'
+            $apiKey: '%open_weathermap_key%'
+        tags: ['api.client_weather']

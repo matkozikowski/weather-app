@@ -5,15 +5,27 @@ declare(strict_types=1);
 namespace App\Symfony\Controller;
 
 use App\Symfony\Form\SearchType;
-use App\Model\DTO\SearchDTO;
+use App\CQRS\SystemInterface;
+use App\Application\Command\SearchWeather;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class HomeController extends AbstractController
+class SearchController extends AbstractController
 {
+    /**
+     * @var SystemInterface
+     */
+    private $system;
+
+    public function __construct(SystemInterface $system)
+    {
+        $this->system = $system;
+    }
+
     /**
      * @Route("/",  name="home", methods={"GET"})
      */
@@ -32,18 +44,30 @@ class HomeController extends AbstractController
     /**
      * @Route("/search",  name="search", methods={"POST"})
      */
-    public function search(Request $request): Response
+    public function search(Request $request): RedirectResponse
     {
         $data = $request->request->get('search');
-        dump($data);
-        die();
+
+        $form = $this->createSearchForm($data);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $searchWeather = new SearchWeather(
+                $data['country'],
+                $data['city']
+            );
+
+            $this->system->handle($searchWeather);
+        }
+
+        return $this->redirectToRoute('home');
     }
 
-    private function createSearchForm(): FormInterface
+    private function createSearchForm(array $data = []): FormInterface
     {
         return $this->createForm(
             SearchType::class,
-            null,
+            $data,
             [
                 'action' => $this->generateUrl('search'),
                 'method' => Request::METHOD_POST,

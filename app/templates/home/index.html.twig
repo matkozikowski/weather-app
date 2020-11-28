@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <div class="container form--search">
+        <h3 class="h3">Search Weather</h3>
+
+        <div class="flex-row justify-content-md-center messages--flash">
+            {% include 'components/flash_messages.html.twig' %}
+        </div>
+
+        <div class="flex-row justify-content-md-center">
+            {% include 'components/search_form.html.twig' %}
+        </div>
+
+    </div>
+
+{% endblock %}

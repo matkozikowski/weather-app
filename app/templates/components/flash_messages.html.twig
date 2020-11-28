@@ -1,0 +1,16 @@
+{% trans_default_domain 'Application' %}
+
+<div class="flex-row">
+    <div class="col-12 col-md-12">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('errors') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+</div>

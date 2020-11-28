@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="en">
+    <file id="messages.en">
+        <unit id="searchProvince" name="search.form.province">
+            <segment>
+                <source>search.form.province</source>
+                <target>Province</target>
+            </segment>
+        </unit>
+        <unit id="searchCity" name="search.form.city">
+            <segment>
+                <source>search.form.city</source>
+                <target>City</target>
+            </segment>
+        </unit>
+        <unit id="searchSearch" name="search.form.search">
+            <segment>
+                <source>search.form.search</source>
+                <target>Search</target>
+            </segment>
+        </unit>
+    </file>
+</xliff>
+
