@@ -7,7 +7,7 @@ namespace App\CQRS;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
-
+use App\Application\Query\Query;
 use function get_class;
 
 final class System implements SystemInterface
@@ -22,10 +22,16 @@ final class System implements SystemInterface
      */
     private $commandBus;
 
-    public function __construct(LoggerInterface $logger, CommandBus $commandBus)
+    /**
+     * @var Queries
+     */
+    private $queries;
+
+    public function __construct(LoggerInterface $logger, CommandBus $commandBus, Queries $queries)
     {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
+        $this->queries = $queries;
     }
 
     public function handle(CommandInterface $command): void
@@ -47,7 +53,8 @@ final class System implements SystemInterface
         }
     }
 
-    public function query(string $queryClass): QueryInterface
+    public function query(string $queryClass): Query
     {
+        return $this->queries->get($queryClass);
     }
 }

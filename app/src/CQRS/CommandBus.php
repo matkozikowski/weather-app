@@ -6,7 +6,7 @@ namespace App\CQRS;
 
 use Psr\Container\ContainerInterface;
 
-class CommandBus implements CommandHandleInterface
+final class CommandBus implements CommandHandleInterface
 {
     private const HANDLER_PREFIX = 'Handler';
 

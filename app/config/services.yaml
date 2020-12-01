@@ -28,6 +28,10 @@ services:
         resource: '../src/Application/Handler'
         public: true
 
+    App\Infrastructure\Doctrine\Dbal\:
+        resource: '../src/Infrastructure/Doctrine/Dbal'
+        public: true
+
     App\Infrastructure\Client\OWClient:
         arguments:
             $httpClient: '@GuzzleHttp\Client'

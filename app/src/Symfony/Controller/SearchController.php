@@ -7,6 +7,7 @@ namespace App\Symfony\Controller;
 use App\Symfony\Form\SearchType;
 use App\CQRS\SystemInterface;
 use App\Application\Command\SearchWeather;
+use App\Application\Query\WeatherQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,7 @@ class SearchController extends AbstractController
             'home/index.html.twig',
             [
                 'form' => $searchForm->createView(),
+                'weather_list' => $this->system->query(WeatherQuery::class)->findAll(),
             ]
         );
     }

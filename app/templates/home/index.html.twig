@@ -1,3 +1,5 @@
+{% trans_default_domain 'Application' %}
+
 {% extends 'base.html.twig' %}
 
 {% block content %}
@@ -13,6 +15,26 @@
             {% include 'components/search_form.html.twig' %}
         </div>
 
+        <div class="flex-row justify-content-md-center" style="margin-top: 80px;">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">{{ 'weather_list.row.country'| trans }}</th>
+                    <th scope="col">{{ 'weather_list.row.city'| trans }}</th>
+                    <th scope="col">{{ 'weather_list.row.temperature'| trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for weather in weather_list %}
+                    <tr>
+                        <td>{{ weather.country }}</td>
+                        <td>{{ weather.city }}</td>
+                        <td>{{ weather.temperature }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 {% endblock %}
