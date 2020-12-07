@@ -6,10 +6,10 @@ namespace App\Infrastructure\Http;
 
 use App\Infrastructure\Client\OWClient;
 use App\Domain\Model\Search;
-use App\Infrastructure\Factory\TemperatureFactory;
 use App\Infrastructure\Provider\ServicesProvider;
 use App\Infrastructure\Client\ClientInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Infrastructure\Factory\CompareTemperatureFactory;
 
 class SearchWeatherService
 {
@@ -19,14 +19,14 @@ class SearchWeatherService
     private $servicesProvider;
 
     /**
-     * @var TemperatureFactory
+     * @var CompareTemperatureFactory
      */
-    private $temperatureFactory;
+    private $compareTemperatureFactory;
 
-    public function __construct(ServicesProvider $servicesProvider, TemperatureFactory $temperatureFactory)
+    public function __construct(ServicesProvider $servicesProvider, CompareTemperatureFactory $compareTemperatureFactory)
     {
         $this->servicesProvider = $servicesProvider;
-        $this->temperatureFactory = $temperatureFactory;
+        $this->compareTemperatureFactory = $compareTemperatureFactory;
     }
 
     public function search(Search $search): string
@@ -37,7 +37,7 @@ class SearchWeatherService
             return (string)round($temperatures->first());
         }
 
-        return (string) $temperatures;
+        return $this->compareTemperatureFactory->create($temperatures);
     }
 
     private function getTemperatures(Search $search): ArrayCollection
@@ -47,7 +47,7 @@ class SearchWeatherService
             if ($apiService instanceof ClientInterface) {
                 $temperature = $apiService->getResponse($search->city(), $search->country());
                 if (false === empty($temperature)) {
-                    $temperatures->add($this->temperatureFactory->create($temperature));
+                    $temperatures->add($temperature);
                 }
             }
         }

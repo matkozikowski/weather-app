@@ -90,6 +90,9 @@
     "guzzlehttp/psr7": {
         "version": "1.7.0"
     },
+    "mashape/unirest-php": {
+        "version": "v3.0.4"
+    },
     "monolog/monolog": {
         "version": "2.1.1"
     },

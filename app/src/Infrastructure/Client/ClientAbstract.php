@@ -15,8 +15,14 @@ abstract class ClientAbstract
      */
     protected $httpClient;
 
-    public function __construct(ClientInterface $httpClient)
+    /**
+     * @var string
+     */
+    protected $apiKey;
+
+    public function __construct(string $apiKey, ClientInterface $httpClient)
     {
+        $this->apiKey = $apiKey;
         $this->httpClient = $httpClient;
     }
 
