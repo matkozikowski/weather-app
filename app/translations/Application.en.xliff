@@ -28,13 +28,13 @@
         <unit id="weatherListCity" name="weather_list.row.city">
             <segment>
                 <source>weather_list.row.city</source>
-                <target>Country</target>
+                <target>City</target>
             </segment>
         </unit>
         <unit id="weatherListTemperature" name="weather_list.row.temperature">
             <segment>
                 <source>weather_list.row.temperature</source>
-                <target>Country</target>
+                <target>Temp.</target>
             </segment>
         </unit>
     </file>
