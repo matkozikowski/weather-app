@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     open_weathermap_key: 'b595a444038f55273d814970837a431a'
+    weatherstack_key: 'b6f748e463319c9eee3a07d3d0331a7f'
 
 services:
     # default configuration for services in *this* file
@@ -34,6 +35,13 @@ services:
 
     App\Infrastructure\Client\OWClient:
         arguments:
-            $httpClient: '@GuzzleHttp\Client'
             $apiKey: '%open_weathermap_key%'
+            $httpClient: '@GuzzleHttp\Client'
+            $temperatureFactory: '@App\Infrastructure\Factory\TemperatureFactory'
         tags: ['api.client_weather']
+
+    App\Infrastructure\Client\WeatherStackClient:
+        arguments:
+            $apiKey: '%weatherstack_key%'
+            $httpClient: '@GuzzleHttp\Client'
+        tags: [ 'api.client_weather' ]

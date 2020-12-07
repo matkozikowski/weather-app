@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace App\Infrastructure\Client;
 
 use App\Infrastructure\Enum\OwcEnum;
+use App\Infrastructure\Factory\TemperatureFactory;
 use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 
 use function sprintf;
 
 class OWClient extends ClientAbstract implements ClientInterface
 {
-    private $apiKey;
+    /**
+     * @var TemperatureFactory
+     */
+    private $temperatureFactory;
 
-    public function __construct(GuzzleClientInterface $httpClient, string $apiKey)
+    public function __construct(string $apiKey, GuzzleClientInterface $httpClient, TemperatureFactory $temperatureFactory)
     {
-        parent::__construct($httpClient);
+        parent::__construct($apiKey, $httpClient);
 
-        $this->apiKey = $apiKey;
+        $this->temperatureFactory = $temperatureFactory;
     }
 
     public function getResponse(string $city, string $country): ?float
@@ -35,7 +39,9 @@ class OWClient extends ClientAbstract implements ClientInterface
             $result = json_decode($response->getBody()->getContents(), true);
 
             if (isset($result[OwcEnum::RESPONSE_MAIN_INDEX][OwcEnum::RESPONSE_TEMP_INDEX])) {
-                return $result[OwcEnum::RESPONSE_MAIN_INDEX][OwcEnum::RESPONSE_TEMP_INDEX];
+                $temperature = $result[OwcEnum::RESPONSE_MAIN_INDEX][OwcEnum::RESPONSE_TEMP_INDEX];
+
+                return $this->temperatureFactory->create($temperature);
             }
         }
 
